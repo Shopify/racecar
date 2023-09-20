@@ -382,12 +382,16 @@ RSpec.describe Racecar::Datadog::ProducerSubscriber do
       create_event(
         'deliver_messages',
         client_id: 'racecar',
-        delivered_message_count: 10
+        delivered_message_count: 10,
+        topic: 'test_topic',
+        partition: 1,
       )
     end
     let(:metric_tags) do
       %w[
           client:racecar
+          partition:1
+          topic:test_topic
         ]
     end
 
