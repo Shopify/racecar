@@ -4,9 +4,10 @@ RSpec.describe Racecar::MessageDeliveryError do
   let(:rdkafka_msg_timed_out) { Rdkafka::RdkafkaError.new(-192) }
   let(:rdkafka_unknown_topic_or_part) { Rdkafka::RdkafkaError.new(3) }
   let(:rdkafka_delivery_handle) do
-    instance_double(Rdkafka::Producer::DeliveryHandle).tap { |mock|
-      allow(mock).to receive_message_chain(:create_result, :partition).and_return(37)
-    }
+    Rdkafka::Producer::DeliveryHandle.new.tap do |dh|
+      dh[:partition] = 37
+      dh[:offset] = 42
+    end
   end
 
   it "passes through error code" do
