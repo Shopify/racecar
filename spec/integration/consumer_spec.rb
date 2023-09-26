@@ -111,7 +111,7 @@ RSpec.describe "running a Racecar consumer", type: :integration do
           publish_messages
           wait_for_messages
 
-          message_count_by_worker = incoming_messages.group_by { |m| m.headers.fetch("processed_by_pid") }.transform_values(&:count)
+          message_count_by_worker = incoming_messages.group_by { |m| m.headers.fetch("processed_by") }.transform_values(&:count)
 
           expect(incoming_messages.map(&:topic).uniq).to eq([output_topic])
           expect(incoming_messages.map(&:payload))
@@ -131,7 +131,7 @@ RSpec.describe "running a Racecar consumer", type: :integration do
           publish_messages
           wait_for_messages
 
-          message_count_by_worker = incoming_messages.group_by { |m| m.headers.fetch("processed_by_pid") }.transform_values(&:count)
+          message_count_by_worker = incoming_messages.group_by { |m| m.headers.fetch("processed_by") }.transform_values(&:count)
 
           expect(incoming_messages.count).to eq(6)
           expect(incoming_messages.map(&:topic).uniq).to eq([output_topic])
@@ -145,32 +145,5 @@ RSpec.describe "running a Racecar consumer", type: :integration do
 
   after do
     Object.send(:remove_const, :IntegrationTestConsumer) if defined?(IntegrationTestConsumer)
-  end
-
-  def echo_consumer_class
-    Class.new(Racecar::Consumer) do
-      class << self
-        attr_accessor :output_topic, :pipe_to_test
-      end
-
-      def self.consumer_id
-        "#{Process.pid}-#{Thread.current.object_id}"
-      end
-
-      def process(message)
-        produce(message.value, topic: self.class.output_topic, partition: message.partition, key: message.key, headers: headers(message))
-        deliver!
-      end
-
-      private
-
-      def headers(message)
-        {
-          processed_by: self.class.consumer_id,
-          processed_at: Process.clock_gettime(Process::CLOCK_MONOTONIC),
-          partition: message.partition,
-        }
-      end
-    end
   end
 end

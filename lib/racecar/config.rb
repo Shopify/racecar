@@ -296,10 +296,6 @@ module Racecar
       )
     end
 
-    def rebalance_listener
-      RebalanceListener.new(self)
-    end
-
     private
 
     def rdkafka_security_config
