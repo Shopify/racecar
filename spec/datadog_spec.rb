@@ -383,7 +383,6 @@ RSpec.describe Racecar::Datadog::ProducerSubscriber do
         'deliver_messages',
         client_id: 'racecar',
         delivered_message_count: 10,
-        topic: 'test_topic',
         partition: 1,
       )
     end
@@ -391,7 +390,6 @@ RSpec.describe Racecar::Datadog::ProducerSubscriber do
       %w[
           client:racecar
           partition:1
-          topic:test_topic
         ]
     end
 

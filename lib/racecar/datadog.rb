@@ -245,8 +245,7 @@ module Racecar
       def acknowledged_message(event)
         tags = {
           client: event.payload.fetch(:client_id),
-          partition: event.payload.fetch(:partition),
-          topic: event.payload.fetch(:topic),
+          partition: event.payload.fetch(:partition)
         }
 
         # Number of messages ACK'd for the topic.
