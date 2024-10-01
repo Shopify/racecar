@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: ["master"]
+    branches: ["update-rdkafka-0-15"]
   push:
-    branches: ["master"]
+    branches: ["update-rdkafka-0-15"]
 
 jobs:
   unit-specs:
