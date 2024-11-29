@@ -1,7 +1,4 @@
-FROM cimg/ruby:2.7.8
-
-RUN sudo apt-get update
-RUN sudo apt-get install docker
+FROM cimg/ruby:3.3
 
 WORKDIR /app
 COPY . .
